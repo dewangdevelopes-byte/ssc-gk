@@ -17,6 +17,14 @@ export interface NewsArticle {
   created_at: string;
 }
 
+export interface TypingSession {
+  id: string;
+  net_wpm: number;
+  accuracy: number;
+  key_depressions: number;
+  created_at: string;
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -49,6 +57,30 @@ export interface Database {
           category?: string;
           summary?: string | null;
           published_at?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      typing_sessions: {
+        Row: {
+          id: string;
+          net_wpm: number;
+          accuracy: number;
+          key_depressions: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          net_wpm: number;
+          accuracy: number;
+          key_depressions: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          net_wpm?: number;
+          accuracy?: number;
+          key_depressions?: number;
           created_at?: string;
         };
         Relationships: [];

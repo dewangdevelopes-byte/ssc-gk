@@ -31,3 +31,34 @@ create policy "Public read access"
 on public.news_articles 
 for select 
 using (true);
+
+-- ====================================================
+-- 4. Typing Analytics Schema (SSC CGL DEST Module)
+-- ====================================================
+
+create table if not exists public.typing_sessions (
+    id uuid primary key default gen_random_uuid(),
+    net_wpm integer not null,
+    accuracy numeric(5,2) not null,
+    key_depressions integer not null,
+    created_at timestamptz not null default timezone('utc'::text, now())
+);
+
+-- Index for querying recent sessions ordered by timestamp
+create index if not exists idx_typing_sessions_created_at_desc 
+on public.typing_sessions (created_at desc);
+
+-- Enable Row Level Security
+alter table public.typing_sessions enable row level security;
+
+-- Allow reading sessions
+create policy "Public read typing sessions" 
+on public.typing_sessions 
+for select 
+using (true);
+
+-- Allow creating new typing session records
+create policy "Public insert typing sessions" 
+on public.typing_sessions 
+for insert 
+with check (true);
