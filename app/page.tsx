@@ -12,6 +12,7 @@ import {
   ExternalLink,
   BookOpen,
   ArrowLeft,
+  Keyboard,
 } from 'lucide-react';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { CATEGORY_GROUPS, ALL_CATEGORIES, CATEGORY_MAP, classifyArticleCategory } from '@/lib/categories';
@@ -187,6 +188,14 @@ export default async function HomePage(props: PageProps) {
               <span>{isDefaultToday ? "Today's:" : 'Articles:'}</span>
               <strong className="text-slate-900 text-xs sm:text-sm">{totalArticles || 0}</strong>
             </div>
+
+            <Link
+              href="/typing"
+              className="flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl bg-blue-50 hover:bg-blue-100/80 border border-blue-200 text-xs font-semibold text-blue-700 shadow-xs transition-all"
+            >
+              <Keyboard className="w-3.5 h-3.5 text-blue-600" />
+              <span>DEST Typing</span>
+            </Link>
 
             <AddNewsModal />
             <WishlistNavBadge />
