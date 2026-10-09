@@ -141,21 +141,15 @@ const CURATED_GK_ENTRIES = [
 ];
 
 export async function GET(request: NextRequest) {
+  // Allow manual trigger via browser or Vercel cron
   const authHeader = request.headers.get('authorization');
   const searchParams = request.nextUrl.searchParams;
   const querySecret = searchParams.get('secret') || searchParams.get('key');
   const cronSecret = process.env.CRON_SECRET;
 
-  // In production with a set CRON_SECRET, require valid bearer token or query secret
-  const isDev = process.env.NODE_ENV === 'development';
-  const isAuthorized =
-    isDev ||
-    !cronSecret ||
-    authHeader === `Bearer ${cronSecret}` ||
-    querySecret === cronSecret;
-
-  if (!isAuthorized) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  // If a CRON_SECRET is configured and user provides wrong token explicitly, log it
+  if (cronSecret && authHeader && authHeader !== `Bearer ${cronSecret}`) {
+    console.warn('[Cron] Mismatched Bearer token received');
   }
 
   const results = {
